@@ -25,7 +25,7 @@ This tutorial assumes that you have already gained some experience using BEAST2.
 
 ### BEAST2 - Bayesian Evolutionary Analysis Sampling Trees 2
 
-BEAST2 is a free software package for Bayesian evolutionary analysis of molecular sequences using MCMC and strictly oriented toward inference using rooted, time-measured phylogenetic trees {% cite Bouckaert2014 --file Tutorial-Template/master-refs.bib %}. This tutorial uses the BEAST v{{ page.beastversion }}.
+BEAST2 is a free software package for Bayesian evolutionary analysis of molecular sequences using MCMC and strictly oriented toward inference using rooted, time-measured phylogenetic trees {% cite Bouckaert2014 --file BDMM-Prime-for-macroevolution/master-refs.bib %}. This tutorial uses the BEAST v{{ page.beastversion }}.
 
 ### BEAUti - Bayesian Evolutionary Analysis Utility
 
@@ -573,7 +573,7 @@ We can use this tree to explore hypotheses about the geographic origins of diffe
 
 # Useful Links
 
-- [Bayesian Evolutionary Analysis with BEAST 2](http://www.beast2.org/book.html) {% cite BEAST2book2014 --file Tutorial-Template/master-refs.bib %}
+- [Bayesian Evolutionary Analysis with BEAST 2](http://www.beast2.org/book.html) {% cite BEAST2book2014 --file BDMM-Prime-for-macroevolution/master-refs.bib %}
 - BEAST 2 website and documentation: [http://www.beast2.org/](http://www.beast2.org/)
 - [BDMM-Prime package website](https://tgvaughan.github.io/BDMM-Prime/)
 
@@ -581,5 +581,5 @@ We can use this tree to explore hypotheses about the geographic origins of diffe
 
 # Relevant References
 
-{% bibliography --cited --file Tutorial-Template/master-refs.bib %}
+{% bibliography --cited --file BDMM-Prime-for-macroevolution/master-refs.bib %}
 
