@@ -2,17 +2,22 @@
 author: Rachel C. M. Warnock, Timothy G Vaughan
 level: Intermediate
 title: BDMM-Prime for Macroevolution
-subtitle: The multi-type fossilized birth-death process
+subtitle: The fossilized birth-death process and extensions
 beastversion: 2.7.7
 ---
 
-# Background TODO
+# Background
 
-This is a template tutorial and style guide to help formatting Markdown tutorials. 
+The fossilized birth-death (FBD) process is a phylodynamic model that incorporates sampling through time and allows us infer trees with sampled ancestors {% cite Stadler2010 Heath2014 --file BDMM-Prime-for-macroevolution/master-refs.bib %}. This is important for phylogenies that incorporate fossils. In the original formulation of the model, the birth (speciation), death (extinction), and fossil sampling rates were treated as constant over time and across the tree. Since then, many models extentions have been published that relax the asummption of constant rates or uniform sampling. The BEAST2 package BDMM-Prime {% cite Vaughan2025 --file BDMM-Prime-for-macroevolution/master-refs.bib %} incorporates several of these new models, including those that allow rates to vary across time or across different parts of the tree {% cite Gavryushkina2014 Kuhnert2016 Scire2022 --file BDMM-Prime-for-macroevolution/master-refs.bib %}. 
 
-Please start the tutorial by adding some background about the tutorial in this section, clearly explaining the question/problem and the type of analysis that the methods in the tutorial should be used for. In the next section please add a short description of all the programs or packages used in the tutorial. The tutorial exercise should follow this part. Please add a short explanation on the dataset used in the tutorial before starting with the exercise. Please also add a section after the exercise interpreting the results. End your tutorial with some useful links.
+This tutorial will provide an introduction of how BDMM-Prime package can be applied in macroevolution. For an example in epidemiology see the [BDMM-Prime package website](https://tgvaughan.github.io/BDMM-Prime/#id-1-Introduction).
 
-Some of the text in this tutorial template is just dummy filler text. Please do not try to understand it.
+## Pre-requisits
+
+This tutorial assumes that you have already gained some experience using BEAST2. If you have not already done so, we recommend first completing the following tutorials: 
+
+- [Introduction to BEAST2](https://taming-the-beast.org/tutorials/Introduction-to-BEAST2/)
+- [Dating species divergences with the fossilized birth-death process](https://taming-the-beast.org/tutorials/FBD-tutorial/) or [Total-evidence dating using BEAST2](https://taming-the-beast.org/tutorials/Total-Evidence-Tutorial/)
 
 ----
 
@@ -22,13 +27,29 @@ Some of the text in this tutorial template is just dummy filler text. Please do 
 
 BEAST2 is a free software package for Bayesian evolutionary analysis of molecular sequences using MCMC and strictly oriented toward inference using rooted, time-measured phylogenetic trees {% cite Bouckaert2014 --file Tutorial-Template/master-refs.bib %}. This tutorial uses the BEAST v{{ page.beastversion }}.
 
-TODO
+### BEAUti - Bayesian Evolutionary Analysis Utility
+
+BEAUti2 is a graphical user interface tool for generating BEAST2 XML configuration files.
+
+Both BEAST2 and BEAUti2 are Java programs, which means that the exact same code runs, and the interface will be the same, on all computing platforms. The screenshots used in this tutorial are taken on a Mac OS X computer; however, both programs will have the same layout and functionality on both Windows and Linux. BEAUti2 is provided as a part of the BEAST2 package so you do not need to install it separately.
+
+### Any programmer-friendly text editor
+
+We will need to view our data input files to understand their format, for which we'll need a text editor. It's best to use one designed for programmers as these include nice features such as syntax highlighting, which makes the code more reader-friendly. [Sublime Text](https://www.sublimetext.com) is a good option which is available for MacOS, Windows and Linux.
+
+### Tracer
+
+[Tracer](http://beast.community/tracer) is used to summarise the posterior estimates of the various parameters sampled by the Markov Chain. This program can be used for visual inspection and to assess convergence. It helps to quickly view median estimates and 95% highest posterior density intervals of the parameters, and calculates the effective sample sizes (ESS) of parameters. It can also be used to investigate potential parameter correlations. We will be using Tracer v{{ page.tracerversion }}.
+
+### TreeAnnotator
+
+TreeAnnotator is used to summarise the posterior sample of trees to produce a maximum clade credibility tree and summarize the posterior estimates of other parameters that can be easily visualized on the tree (e.g. node height). This program is also useful for comparing a specific tree topology and branching times to the set of trees sampled in the MCMC analysis.
 
 ----
 
 # Practical: BDMM-Prime for Macroevolution
 
-TODO 
+BDMM-Prime is a package written for flexible phylodynamic inference. It combines the functionality of multiple other BEAST2 packages, including the BDMM, BDSKY and SA packages, and can be applied to a wide range of scenarios in epidemiology and macroevolution. Due to the flexibility and the large variety of ways in which model parameters can be combined using BDMM-Prime there's more options to consider when setting up your analysis.
 
 ## The data
 
@@ -77,7 +98,7 @@ The first thing we need to do is install the BDMM-Prime package. This package is
 
 ----
 
-# Part 1: The constant rate birth-death process
+# Part 1: The constant rate FBD process
 
 ## The Partitions panel
 
@@ -327,7 +348,7 @@ Use this screen shot to ensure all your prior distributions and initial values h
 
 ## The MCMC panel
 
-> Navigate to the MCMC panel. For now, we'll leave all the MCMC chain settings as the defaults. 
+> Navigate to the MCMC panel and change the **Chain Length** to 1,000,000 (just delete one of the zeros).
 
 <figure>
 	<a id="fig:24"></a>
@@ -353,23 +374,36 @@ BDMM-Prime allows us to output additional tree files using the **typedTree** and
 
 To run your analysis open the BEAST application and navigate to the right working directory. Select your xml file and click **Run**.
 
-This analysis should take ~10-15 minutes to run. While your analysis is running you can move on to part 2 (the multi-type birth-death process).
+This analysis should only take about a minute to run. 
 
 ## Examining the output
+
+This analysis should have generated the following results files:
+
+- `amniotes_constant_rates_FBD.log` - this file contains all the numerical parameters sampled during MCMC
+- `amniotes.trees` - this file contains the trees sampled during MCMC
 
 > First open the .log file in Tracer and explore the output. It should look something like this. 
 
 <figure>
 	<a id="fig:26"></a>
 	<img style="width:70%;" src="figures/tracer.png" alt="">
-	<figcaption>Figure 26: The tracer widow for the constant rates FBD model.</figcaption>
+	<figcaption>Figure 26: The tracer window for the constant rates FBD model.</figcaption>
 </figure>
 
 Of particular interest are the parameters **birthRateSPCanonical**, **deathRateSPCanonical**, and **samplingRateSPCanonical**. The speciation and extinction rates are both ~0.35, while the sampling rate is ~0.01. This suggests that sampling is low relative to the overall diversity of the group. 
 
 Note that this analysis hasn't fully converged but you can download the pre-cooked output for the same analysis that's been run a bit longer.
 
-If you want you can also generate a consensus tree using the standard **.trees** file (`amniotes.trees`) and the approach described in previous tutorials for trees with sampled ancestors. For the **Target tree type** stick with the default **Maximum clade credibility tree** and for the **Node Heights** select **Median heights** from the drop down menu. You can open this summary tree in FigTree or IcyTree and it should look very similar to the published very of this tree.
+> If you want you can also generate a consensus tree using the standard **.trees** file (`amniotes.trees`) as the input and the approach described in [previous tutorials](https://taming-the-beast.org/tutorials/Total-Evidence-Tutorial/) for trees with sampled ancestors. For the **Target tree type** stick with the default **Maximum clade credibility tree** and for the **Node Heights** select **Median heights** from the drop down menu. 
+
+<figure>
+	<a id="fig:27"></a>
+	<img style="width:70%;" src="figures/treeann.png" alt="">
+	<figcaption>Figure 27: The TreeAnnotator window.</figcaption>
+</figure>
+
+> You can open the resulting summary tree in FigTree or IcyTree and it should look very similar to the published version of this tree.
 
 -------
 
@@ -384,17 +418,17 @@ In the second part of this tutorial we will take geographic provenance into acco
 > Return to the Priors panel in BEAUti. Next we're going to add information to the analysis about geographic area. Expand the tree model options  and scroll down to **Type Trait Set**. Click **Auto-configure**. Select **split on character** and from the drop down menu next to **and take group(s):** select 3. 
 
 <figure>
-	<a id="fig:27"></a>
+	<a id="fig:28"></a>
 	<img style="width:50%;" src="figures/10a_types.png" alt="">
-	<figcaption>Figure 27: Options for extracting type information from taxon labels.</figcaption>
+	<figcaption>Figure 28: Options for extracting type information from taxon labels.</figcaption>
 </figure>
 
 > Click **OK**. You should now be able to see the geographic area associated with each fossil in the **Type** column, corresponding to Eurasia, North America, and South Africa. 
 
 <figure>
-	<a id="fig:28"></a>
+	<a id="fig:29"></a>
 	<img style="width:80%;" src="figures/10b_types.png" alt="">
-	<figcaption>Figure 28: Type information associated with each sample.</figcaption>
+	<figcaption>Figure 29: Type information associated with each sample.</figcaption>
 </figure>
 
 > Scroll up and you should see some additional options have been added for the tree model. In particular, options will have been added for the **Migration Rate** and **Birth Rate Among Demes** parameters. 
@@ -404,9 +438,9 @@ The migration rate can be interpreted as the rate of change between types (in ou
 > Double click on the box for **Birth Rate Among Demes** next to **ALL** and enter 0.0.
 
 <figure>
-	<a id="fig:29"></a>
+	<a id="fig:30"></a>
 	<img style="width:80%;" src="figures/10c_types.png" alt="">
-	<figcaption>Figure 29: The migration rate and birth rate among demes parameters.</figcaption>
+	<figcaption>Figure 30: The migration rate and birth rate among demes parameters.</figcaption>
 </figure>
 
 In this analysis we want to allow birth, death, and sampling to vary across geographic areas. 
@@ -414,17 +448,17 @@ In this analysis we want to allow birth, death, and sampling to vary across geog
 > Scroll back up. You'll see that next to each of these parameters is a checked box called **Scalar values** - this indicates that a single rate applies to all types. Starting with **Birth Rate**, if you uncheck this box, a separate rate will appear next to each type. You can select **Display epoch visualisation** to make sure things are set up correctly.
 
 <figure>
-	<a id="fig:30"></a>
+	<a id="fig:31"></a>
 	<img style="width:80%;" src="figures/10d_types.png" alt="">
-	<figcaption>Figure 30: Type specific birth rates.</figcaption>
+	<figcaption>Figure 31: Type specific birth rates.</figcaption>
 </figure>
 
 > Do the same for the **Death Rate** and **Sampling Rate** parameters.
 
 <figure>
-	<a id="fig:31"></a>
+	<a id="fig:32"></a>
 	<img style="width:80%;" src="figures/10e_types.png" alt="">
-	<figcaption>Figure 31: Type specific death and sampling rates.</figcaption>
+	<figcaption>Figure 32: Type specific death and sampling rates.</figcaption>
 </figure>
 
 Over the course of our sampling interval, the late Carboniferous to the mid Triassic, we see major changes in continental configuration and the relative connectedness of geographic areas - to quantify the impact this has on migration we're going to allow the overall migration rate to change through time, assuming piece-wise constant variation in rate.
@@ -433,9 +467,9 @@ Over the course of our sampling interval, the late Carboniferous to the mid Tria
 >  First double click the the initial value for this parameter and change it to 0.1 and make sure the box next to **Estimate values** is checked. Next change **Number of change times:** to 2. Check the box that says **Relative to process length** and click **Distribute evenly** - this means that the time between the origin of the process and the end will be divided into 3 equal intervals and each one will be assigned an independent rate parameter. Select **Display epoch visualisation** to make sure things are set up correctly.
 
 <figure>
-	<a id="fig:32"></a>
+	<a id="fig:33"></a>
 	<img style="width:80%;" src="figures/10f_types.png" alt="">
-	<figcaption>Figure 32: Time varying mirgration rates.</figcaption>
+	<figcaption>Figure 33: Time varying mirgration rates.</figcaption>
 </figure>
 
 Note that we can specify the probability of each type at the beginning of the process, i.e., at the origin or root. By default these are set to equal but you can change these in the box next to **Start Type Prior Probs**. This probability can be estimated or you might have strong evidence for the type at the root but we'll leave this for now.
@@ -443,21 +477,24 @@ Note that we can specify the probability of each type at the beginning of the pr
 > Finally, scroll down and assign an exponential prior to the migration rate parameter. Note BEAUTi will assign the same prior to all rates of the same parameter, meaning that in this case, for each interval the migration rate will be drawn from a separate exponential prior distribution. 
 
 <figure>
-	<a id="fig:33"></a>
+	<a id="fig:34"></a>
 	<img style="width:80%;" src="figures/10g_types.png" alt="">
-	<figcaption>Figure 33: Prior options for mirgration rate.</figcaption>
+	<figcaption>Figure 34: Prior options for mirgration rate.</figcaption>
 </figure>
 
 ## The MCMC panel
 
-> Navigate to the MCMC panel and change the 'Chain Length' to 1,000,000 (just delete one of the zeros).
+> Navigate to the MCMC panel. We'll leave all the MCMC chain settings as above, i.e., we'll use a chain length of 1,000,000 steps.
 
-> We're also going to enable the the 'nodeTypedTree' logger, as shown below.
+Now that we've added information about types, we can take advantage of some other output options. In particular, BDMM-Prime can use a stocastic mapping appraoch to generate *edge-typed trees*. These are trees that include information about the phylogenetic history of type. We can generate both *typed trees*, which show where along internal branches type changes (migration events) have occurred or *node typed trees*, which includes type information at internal nodes only.
+This can done using the **typedTreeLogger** and  **nodeTypedTreeLogger**, respectively. In this analysis, we're going to use the latter, as shown below, because *node type trees* are more computational efficient to generate and easier to summarise.
+
+> Expand the selection next to **nodeTypedTreeLogger** and check the box next to **Enable logger**. 
 
 <figure>
-	<a id="fig:33"></a>
+	<a id="fig:35"></a>
 	<img style="width:80%;" src="figures/11b_MCMC.png" alt="">
-	<figcaption>Figure 33: Options for the **nodeTypedTree** logger.</figcaption>
+	<figcaption>Figure 35: Options for the **nodeTypedTree** logger.</figcaption>
 </figure>
 
 > Go to **File > Save as** to save your xml input file in your new folder. Call it something like `amniotes_multi_type_FBD.xml`. 
@@ -466,29 +503,71 @@ Note that we can specify the probability of each type at the beginning of the pr
 
 As above, run your analysis in the BEAST application and navigate to the right working directory. Select your xml file and click Run. 
 
-This analysis will take ~1 hour to run. Ideally this analysis would run for much longer, e.g., 10,000,000+ generations. 
+This analysis will take ~20 minutes to run. Ideally this analysis would be run for much longer, e.g., 10,000,000+ generations.
 
 ## Examining the output
 
-> Open the .log file in Tracer and explore the output. TODO It should look something like this.
+This analysis should have generated the following results files:
 
+- `amniotes_multi_type_FBD.log` - this file contains all the numerical parameters sampled during MCMC
+- `amniotes.trees` - this file contains the trees sampled during MCMC
+- `amniotes_multi_type_FBD.typed.node.trees` - this file contains the trees XXX
 
-# Equations
+> Open the .log file in Tracer and explore the output. It should look something like this.
+> 
+> You might need to expand and adjust the Tracer window so you can see parameter names.
 
-Inline equations: {% eqinline \dot{x} = \sigma(y-x) %}
+<figure>
+	<a id="fig:36"></a>
+	<img style="width:70%;" src="figures/12a_tracer.png" alt="">
+	<figcaption>Figure 36: The tracer window for the multi-type FBD model.</figcaption>
+</figure>
 
-Displayed equations: 
-{% eq \left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right) %}
+Now we have some additional parameters of interest. In particular, we have three estimates for birth, death, and sampling rates, associated with each type or geographic region. 
 
+> Select the **birthRateSPCanonical**, **deathRateSPCanonical**, and **samplingRateSPCanonical** parameters for all three types simultaneously using the shift key. You should be able to higher relative rates of birth and death associated with North America.
 
-# Hyperlinks
+<figure>
+	<a id="fig:37"></a>
+	<img style="width:70%;" src="figures/12b_tracer.png" alt="">
+	<figcaption>Figure 37: The tracer window for the multi-type FBD model showing the birth rates associated with each type.</figcaption>
+</figure>
 
-Add links to figures like this: 
+> Scroll down and explore the estimates for the migration rate associated with different interval. The intervals are labelled from youngest to oldest, 'i0', 'i1', and 'i2s'.    
 
-- [Figure 1](#fig:example1) is 25% of the page width.
-- [Figure 2](#fig:example2) is 10% of the page width. 
+<figure>
+	<a id="fig:38"></a>
+	<img style="width:70%;" src="figures/12c_tracer.png" alt="">
+	<figcaption>Figure 38: The tracer window for the multi-type FBD model showing the migration rates associated with each interval.</figcaption>
+</figure>
 
-Add links to external URLs like [this](http://www.google.com). 
+You should be able to see a larger estimate for migration in the final time bin, which we might expect based on the increase in connectivity between these regions in the Triassic. Recall that we defined 3 equal intervals relative to the origin time of the process. The variables appended **_endtime** will tell the end point of each interval relative to the origin age.
+
+We can summarise information about ancestral types across our posterior distribution of trees using TreeAnnotor. 
+
+> Open TreeAnnotator and select `amniotes_multi_type_FBD.typed.node.trees` as your **Input Tree File.
+> 
+> For the **Target tree type** stick with the default **Maximum clade credibility tree** and for the **Node Heights** select **Median heights** from the drop down menu. Call your **Output File** something like `amniotes_multi_type_FBD.typed.node.con.tre`. See [Figure 27](#fig:27).
+
+> Open the program [IcyTree](https://icytree.org) in your internet browser. Drag and drop your summary tree file onto the page or go to **File > Load from file...**.
+
+> To generate an image like the one below you can select the following options:
+> 
+> - **Style > Mark singletons** (to show any sampled ancestors)
+> - **Style > Colour nodes by > type**
+> - **Style > Internal node text > type.prob**
+> - **Style > Label precision limit > 2 sig. figures**
+> - **Style > Display legend**
+> - **Style > Axis > Age**
+> - **Style > Set axis offset...** and enter 237 in the box, which is end of our sampling window. Click **Ok**.
+
+<figure>
+	<a id="fig:39"></a>
+	<img style="width:70%;" src="figures/icytree.png" alt="">
+	<figcaption>Figure 39: Summary tree plotted in IcyTree showing the ancestral types.</figcaption>
+</figure>
+
+We can use this tree to explore hypotheses about the geographic origins of different lingeages. Note that based on node typed trees, it is not possible to make any statement about where and when along a given branch a type change may have occurred. To learn more about options for exploring migration history check out the [BDMM-Prime package website](https://tgvaughan.github.io/BDMM-Prime/).
 
 ----
 
@@ -496,6 +575,7 @@ Add links to external URLs like [this](http://www.google.com).
 
 - [Bayesian Evolutionary Analysis with BEAST 2](http://www.beast2.org/book.html) {% cite BEAST2book2014 --file Tutorial-Template/master-refs.bib %}
 - BEAST 2 website and documentation: [http://www.beast2.org/](http://www.beast2.org/)
+- [BDMM-Prime package website](https://tgvaughan.github.io/BDMM-Prime/)
 
 ----
 
