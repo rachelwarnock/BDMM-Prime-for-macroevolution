@@ -264,7 +264,7 @@ After you've chosen which parameterization to use, there are still a lot of opti
 
 > Scroll down to the next set of parameters of interest. 
 
-**Rho Sampling** is the probability of sampling a lineage at a given time. In macroevolution this is usually associated with the extant sampling probability at t = 0. In our case study, we have no sampling beyond the period of interest, i.e., the youngest sample included in our dataset is from the Triassic and is therefore {% eqinline \psi$ %}-sampled. There are many amniotes that persisted beyond this interval until the present but these are not included in our dataset. This means we have no rho-sampled taxa and it makes sense to leave Rho = 0.0. 
+**Rho Sampling** is the probability of sampling a lineage at a given time. In macroevolution this is usually associated with the extant sampling probability at t = 0. In our case study, we have no sampling beyond the period of interest, i.e., the youngest sample included in our dataset is from the Triassic and is therefore {% eqinline \psi %}-sampled. There are many amniotes that persisted beyond this interval until the present but these are not included in our dataset. This means we have no rho-sampled taxa and it makes sense to leave Rho = 0.0. 
 
 The next parameter of note is the **Removal Prob** - this is the probability that a lineage is removed from the population upon sampling and it makes more sense in an epidemiological context. We need to change this to 0.0. 
 
