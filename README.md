@@ -8,11 +8,11 @@ beastversion: 2.7.7
 
 # Background
 
-The fossilized birth-death (FBD) process is a phylodynamic model that incorporates sampling through time and allows us infer trees with sampled ancestors {% cite Stadler2010 Heath2014 --file BDMM-Prime-for-macroevolution/master-refs.bib %}. This is important for phylogenies that incorporate fossils. In the original formulation of the model, the birth (speciation), death (extinction), and fossil sampling rates were treated as constant over time and across the tree. Since then, many model extentions have been published that relax the asummption of constant rates or uniform sampling (see {% cite Mulvey2025a --file BDMM-Prime-for-macroevolution/master-refs.bib %} for an overview). The BEAST2 package BDMM-Prime {% cite Vaughan2025 --file BDMM-Prime-for-macroevolution/master-refs.bib %} incorporates several of these new models, including those that allow rates to vary across time or across different parts of the tree {% cite Gavryushkina2014 Kuhnert2016 Scire2022 --file BDMM-Prime-for-macroevolution/master-refs.bib %}. 
+The fossilized birth-death (FBD) process is a phylodynamic model that incorporates sampling through time and allows us to infer trees with sampled ancestors {% cite Stadler2010 Heath2014 --file BDMM-Prime-for-macroevolution/master-refs.bib %}. This is important for phylogenies that incorporate fossils. In the original formulation of the model, the birth (speciation), death (extinction), and fossil sampling rates were treated as constant over time and across the tree. Since then, many model extensions have been published that relax the assumption of constant rates or uniform sampling (see {% cite Mulvey2025a --file BDMM-Prime-for-macroevolution/master-refs.bib %} for an overview). The BEAST2 package BDMM-Prime {% cite Vaughan2025 --file BDMM-Prime-for-macroevolution/master-refs.bib %} incorporates several of these new models, including those that allow rates to vary across time or across different parts of the tree {% cite Gavryushkina2014 Kuhnert2016 Scire2022 --file BDMM-Prime-for-macroevolution/master-refs.bib %}. 
 
 This tutorial will provide an introduction of how the BDMM-Prime package can be applied in macroevolution. For an example in epidemiology see the [BDMM-Prime package website](https://tgvaughan.github.io/BDMM-Prime/#id-1-Introduction).
 
-## Pre-requisits
+## Pre-requisites
 
 This tutorial assumes that you have already gained some experience using BEAST2. If you have not already done so, we recommend first completing the following tutorials: 
 
@@ -25,7 +25,7 @@ This tutorial assumes that you have already gained some experience using BEAST2.
 
 ### BEAST2 - Bayesian Evolutionary Analysis Sampling Trees 2
 
-BEAST2 is a free software package for Bayesian evolutionary analysis of molecular sequences using MCMC and strictly oriented toward inference using rooted, time-measured phylogenetic trees {% cite Bouckaert2014 --file BDMM-Prime-for-macroevolution/master-refs.bib %}. This tutorial uses BEAST v{{ page.beastversion }}.
+BEAST2 is a free software package for Bayesian evolutionary analysis of molecular sequences using MCMC and strictly oriented toward inference using rooted, time-measured phylogenetic trees {% cite Bouckaert2014 Bouckaert2019 --file BDMM-Prime-for-macroevolution/master-refs.bib %}. This tutorial uses BEAST v{{ page.beastversion }}.
 
 ### BEAUti - Bayesian Evolutionary Analysis Utility
 
@@ -49,7 +49,7 @@ TreeAnnotator is used to summarise the posterior sample of trees to produce a ma
 
 # Practical: BDMM-Prime for Macroevolution
 
-BDMM-Prime is a package written for flexible phylodynamic inference. It combines the functionality of multiple other BEAST2 packages, including the BDMM, BDSKY, and SA packages, and can be applied to a wide range of scenarios in epidemiology and macroevolution. Due to the flexibility and the large variety of ways in which model parameters can be combined using BDMM-Prime there's more options to consider when setting up your analysis.
+BDMM-Prime is a package written for flexible phylodynamic inference. It combines the functionality of multiple other BEAST2 packages, including the BDMM, BDSKY, and SA packages, and can be applied to a wide range of scenarios in epidemiology and macroevolution. Due to the flexibility and the large variety of ways in which model parameters can be combined using BDMM-Prime there are more options to consider when setting up your analysis.
 
 ## The data
 
@@ -69,11 +69,11 @@ Note that the taxon labels contain information about the age of our samples (aft
 
 ## Installing the BDMM-Prime and MM packages
 
-The first thing we need to do is install the BDMM-Prime package. This package is not yet listed in the Package Manager in BEAUTi, so we need to install it using the package URL.
+The first thing we need to do is install the BDMM-Prime package. This package is not yet listed in the Package Manager in BEAUti, so we need to install it using the package URL.
 
-> - Open BEAUTi and go to **File > Manage Packages**.
+> - Open **BEAUti** and go to **File > Manage Packages**.
 > - Select **Package repositories** at the bottom of this window. This will open the **Package Repository Manager**. 
-> - At the bottom click **Add URL** and enter the following address: https://tgvaughan.github.io/BDMM-Prime/package.xml
+> - At the bottom click **Add URL** and enter the following address: `https://tgvaughan.github.io/BDMM-Prime/package.xml`
 > 
 > 	After you click 'OK' your window should look like this: 
 
@@ -92,14 +92,14 @@ The first thing we need to do is install the BDMM-Prime package. This package is
 	<figcaption>Figure 3: The Package Manager window.</figcaption>
 </figure>
 
-> If you haven't done so already, you will also need to install the follow two packages:
+> If you haven't done so already, you will also need to install the following two packages:
 > 
-> - MM for models of morphological evolution
-> - BEAST_CLASSIC for the relaxed lognormal clock model
+> - **MM** for models of morphological evolution
+> - **BEAST_CLASSIC** for the relaxed lognormal clock model
 > 
 > These packages should already appear on the same list in the **Package Manager**. You just need to click **Install/Upgrade** for each one.
-
-> Restart BEAUTi to set up an analysis using BDMM-Prime.
+>
+> Restart **BEAUti** to reload packages so you can set up an analysis using **BDMM-Prime**.
 
 ----
 
@@ -109,7 +109,7 @@ The first thing we need to do is install the BDMM-Prime package. This package is
 
 Make sure you have downloaded the nexus file associated with this tutorial, `amniotes.nex`.
 
-> To input your data into BEAUTi, either drag and drop the file into the **Partitions** panel and select **Add Morphological Data** and then **OK** or go to **File > Add Morphological Data**.
+> To input your data into BEAUti, either drag and drop the file into the **Partitions** panel and select **Add Morphological Data** and then **OK** or go to **File > Add Morphological Data**.
 
 <figure>
 	<a id="fig:4"></a>
@@ -378,7 +378,7 @@ BDMM-Prime allows us to output additional tree files using the **typedTree** and
 
 > Go to **File > Save as** to save your xml input file. Call it something like `amniotes_constant_rates_FBD.xml` or anything you like.
 
-> You can leave BEAUti open for the next part of the exercise! However, if you do close BEAUTi you can simply go to **File > Load** and select your xml file - all the BDMM-Prime specifications should be reloaded.
+> You can leave BEAUti open for the next part of the exercise! However, if you do close BEAUti you can simply go to **File > Load** and select your xml file - all the BDMM-Prime specifications should be reloaded.
 
 ## Running BEAST
 
