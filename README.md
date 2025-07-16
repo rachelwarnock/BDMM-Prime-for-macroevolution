@@ -33,9 +33,13 @@ BEAUti2 is a graphical user interface tool for generating BEAST2 XML configurati
 
 Both BEAST2 and BEAUti2 are Java programs, which means that the exact same code runs, and the interface will be the same, on all computing platforms. The screenshots used in this tutorial are taken on a Mac OS X computer; however, both programs will have the same layout and functionality on both Windows and Linux. BEAUti2 is provided as a part of the BEAST2 package so you do not need to install it separately.
 
+
+<!-- Removing for now, it is only used to open the nexus file not to edit anything...
 ### Any programmer-friendly text editor
 
 We will need to view our data input files to understand their format, for which we'll need a text editor. It's best to use one designed for programmers as these include nice features such as syntax highlighting, which makes the code more reader-friendly. [Sublime Text](https://www.sublimetext.com) is a good option which is available for MacOS, Windows and Linux.
+
+-->
 
 ### Tracer
 
@@ -44,6 +48,10 @@ We will need to view our data input files to understand their format, for which 
 ### TreeAnnotator
 
 TreeAnnotator is used to summarise the posterior sample of trees to produce a maximum clade credibility tree and summarize the posterior estimates of other parameters that can be easily visualized on the tree (e.g., node height). This program is also useful for comparing a specific tree topology and branching times to the set of trees sampled in the MCMC analysis.
+
+### IcyTree
+
+IcyTree ([https://icytree.org](https://icytree.org)) is a browser-based phylogenetic tree viewer. It is intended for rapid visualisation of phylogenetic tree files. It can also render phylogenetic networks provided in extended Newick format. IcyTree is compatible with current versions of Mozilla Firefox and Google Chrome.
 
 ----
 
@@ -55,7 +63,7 @@ BDMM-Prime is a package written for flexible phylodynamic inference. It combines
 
 We'll use a published dataset of [amniotes](https://en.wikipedia.org/wiki/Amniote) that has been used previously to explore the early evolution of this group {% cite Bouckaert2014 --file BDMM-Prime-for-macroevolution/master-refs.bib %}.
 
-The data comprises 294 binary and multi-state characters for 70 fossils, as well as their age and locality information, spanning ~70 myr from the late Carboniferous to the mid Triassic. The specimens can be categorised into three broad geographic areas associated with the northern, mid, and southern areas of the supercontinent [Pangea](https://en.wikipedia.org/wiki/Pangaea),  corresponding approximately to what would be known today as Eurasia, North America, and South Africa.
+The data comprises 294 binary and multi-state characters for 70 fossils, as well as their age and locality information, spanning \~70 myr from the late Carboniferous to the mid Triassic. The specimens can be categorised into three broad geographic areas associated with the northern, mid, and southern areas of the supercontinent [Pangea](https://en.wikipedia.org/wiki/Pangaea),  corresponding approximately to what would be known today as Eurasia, North America, and South Africa.
 
 > Download the data file `amniotes.nex` and open it in a text editor of your choice. The file can be found on the left-hand panel, under the heading **Data** or in the `data/` folder if you cloned the GitHub repository.
 
@@ -636,7 +644,7 @@ We can summarise information about ancestral types across our posterior distribu
 	<figcaption>Figure 40: Summary tree plotted in IcyTree showing the ancestral types.</figcaption>
 </figure>
 
-We can use this tree to explore hypotheses about the geographic origins of different lingeages. Note that based on node typed trees, it is not possible to make any statements about where and when along a given branch a type change may have occurred. To learn more about options for exploring migration history check out the [BDMM-Prime package website](https://tgvaughan.github.io/BDMM-Prime/).
+We can use this tree to explore hypotheses about the geographic origins of different lineages. Note that based on node typed trees, it is not possible to make any statements about where and when along a given branch a type change may have occurred. To learn more about options for exploring migration history check out the [BDMM-Prime package website](https://tgvaughan.github.io/BDMM-Prime/).
 
 ----
 
