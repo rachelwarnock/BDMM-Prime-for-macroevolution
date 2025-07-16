@@ -216,7 +216,7 @@ Here we will set up the tree model and all the prior parameters associated with 
 
 ### Clock model parameters
 
-Let's start with clock model parameters, the overall mean on the clock rate (**ucldMean**) and the standard deviation of the clock rates (**ucldStdev**), which you should already see listed here.
+Let's start with clock model parameters **ucldMean** and **ucldStdev**, which you should already see listed here. This is the mean and standard deviation of the lognormal distribution from which branch (clock) rates are drawn.
 
 > Expand the options for **ucldMean** by clicking the triangle to the left of this parameter. 
 > 
@@ -225,7 +225,7 @@ Let's start with clock model parameters, the overall mean on the clock rate (**u
 <figure>
 	<a id="fig:11"></a>
 	<img style="width:100%;" src="figures/06a_Clock_priors.png" alt="">
-	<figcaption>Figure 11: The prior on the mean clock rate, ucldMean.</figcaption>
+	<figcaption>Figure 11: The prior on the mean of the lognormal distribition of branch rates, ucldMean.</figcaption>
 </figure>
 
 > Select the **initial** value option next to the distribution and change **Value** to 0.001. This ensures our analysis starts in a reasonable part of the parameter space. Click **OK**.
@@ -241,7 +241,7 @@ Let's start with clock model parameters, the overall mean on the clock rate (**u
 <figure>
 	<a id="fig:13"></a>
 	<img style="width:100%;" src="figures/06c_Clock_priors.png" alt="">
-	<figcaption>Figure 13: The prior on the standard deviation of clock rates, ucldStdev.</figcaption>
+	<figcaption>Figure 13: The prior on the standard deviation of the lognormal distribition of branch rates, ucldStdev.</figcaption>
 </figure>
 
 These prior choices match our expectations about rates of morphological evolution estimated in previous analyses of terrestrial vertebrates, i.e., the rates tend to be relatively low, with some degree of variation across branches.
@@ -317,6 +317,8 @@ Note that we are not estimating the removal probability!
 	<img style="width:100%;" src="figures/07b_tree-priors.png" alt="">
 	<figcaption>Figure 15: Options for the rho sampling and removal probability parameters.</figcaption>
 </figure>
+
+**Process Length** refers to the duration of the process and is usually a parameter that we estimate. In our case the process will begin at the origin, which is a time point older than the root of our tree or the age of any of our fossil samples. We will use a prior to constrain the age of the origin time. 
 
 For now you can leave everything else under this tab as it is. If you close this tab and scroll down you should now be able to see an additional set of parameters listed in the **Priors** panel for the birth, death, sampling rates and the origin time parameter.
 
@@ -451,7 +453,7 @@ This analysis should have generated the following results files:
 
 Of particular interest are the parameters **birthRateSPCanonical**, **deathRateSPCanonical**, and **samplingRateSPCanonical**. The speciation and extinction rates (birth and death) are both ~0.35, while the sampling rate is ~0.01. This suggests that sampling is low relative to the overall diversity of the group. 
 
-Note that this analysis hasn't fully converged but you can download the pre-cooked output for the same analysis that's been run a bit longer.
+Note that this analysis hasn't fully converged and would ideally be run much longer.
 
 If you want you can also generate a consensus tree using the standard `.trees` file (`amniotes.trees`) as the input and the approach described in [previous tutorials](https://taming-the-beast.org/tutorials/Total-Evidence-Tutorial/) for trees with sampled ancestors. 
 
@@ -510,7 +512,9 @@ You should now be able to see the geographic area associated with each fossil in
 
 > Scroll up and you should see some additional options have been added for the tree model. In particular, options will have been added for the **Migration Rate** and **Birth Rate Among Demes** parameters. 
 
-The migration rate can be interpreted as the rate of change between types (in our case, the migration between geographic areas). We'll estimate this parameter and allow it to vary over time (see below). The birth rate among demes can be interpreted as the rate of "spontaneous" change between types - in epidemiology this might be used together with types that are associated with specific mutations. This parameter doesn't have an analogous meaning in our macroevolutionary context, so we'll simply fix this parameter to zero.
+The migration rate can be interpreted as the rate of change between types (in our case, the migration between geographic areas). We'll estimate this parameter and allow it to vary over time (see below). 
+
+The birth rate among demes is the rate at which individuals in deme {% i %} give birth to individuals in deme {% j %}, such that new births in {% j %} will be proportional to the number of individuals in {% i %}. This parameter doesn't have an analogous meaning in our macroevolutionary context, so we'll simply fix this parameter to zero.
 
 > Double click on the box for **Birth Rate Among Demes** next to **ALL** and enter **0.0**.
 
