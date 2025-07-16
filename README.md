@@ -57,7 +57,7 @@ We'll use a published dataset of [amniotes](https://en.wikipedia.org/wiki/Amniot
 
 The data comprises 294 binary and multi-state characters for 70 fossils, as well as their age and locality information, spanning ~70 myr from the late Carboniferous to the mid Triassic. The specimens can be categorised into three broad geographic areas associated with the northern, mid, and southern areas of the supercontinent [Pangea](https://en.wikipedia.org/wiki/Pangaea),  corresponding approximately to what would be known today as Eurasia, North America, and South Africa.
 
-> Download the data file `amniotes.nex` and open it in a text editor of your choice.
+> Download the data file `amniotes.nex` and open it in a text editor of your choice. The file can be found on the left-hand panel, under the heading **Data** or in the `data/` folder if you cloned the GitHub repository.
 
 <figure>
 	<a id="fig:1"></a>
@@ -107,7 +107,7 @@ The first thing we need to do is install the BDMM-Prime package. This package is
 
 ## The Partitions panel
 
-Make sure you have downloaded the nexus file associated with this tutorial, `amniotes.nex`.
+Make sure you have downloaded the nexus file associated with this tutorial, `amniotes.nex`. 
 
 > To input your data into BEAUti, either drag and drop the file into the **Partitions** panel and select **Add Morphological Data** and then **OK** or go to **File > Add Morphological Data**.
 
@@ -135,9 +135,9 @@ Your **Partitions** panel should now look like this:
 	<figcaption>Figure 6: The Partitions panel.</figcaption>
 </figure>
 
-By default the characters are separated into four partitions. This means that characters will be assigned to a substitution rate matrix where the number of possible states corresponds to the maximum observed state for each character. Our dataset contains characters with a maximum observed state of one, two, three and four, hence we have four data partitions. The number of characters in each partition is listed under **Sites**.
+By default the characters are separated into four partitions. This means that characters will be assigned to a substitution rate matrix where the number of possible states corresponds to the maximum observed state for each character. Our dataset contains characters with a maximum observed state number of one, two, three and four (respectively corresponding to characters with two, three, four and five observed states), hence we have four data partitions. The number of characters in each partition is listed under **Sites**.
 
-Note that the **Site Model** is *unlinked* across partitions, while the **Clock Model** and **Tree** are *linked* by default. This means that we will allow each partition to evolve under an separate substitution process, but we will assume that the underlying tree is the same and that the same clock model is shared across partitions. 
+Note that the **Site Model** is *unlinked* across partitions, while the **Clock Model** and **Tree** are *linked* by default. This means that we will allow each partition to evolve under a separate substitution process, but we will assume that the underlying tree is the same and that the same clock model is shared across partitions. 
 
 ## The Tip Dates panel
 
@@ -147,7 +147,7 @@ Here we can extract information about the age of our samples from the tip labels
 
 > From the second drop down menu, change **Since some time in the past** to **Before the present**.
 > 
-> Next, select **Auto-configure**. Leave **use everything** selected and from the drop down menu, select **after last**, leaving the delimiter as "_". This will extract age information from the end of your taxon labels.  
+> Next, select **Auto-configure**. Leave **use everything** selected and from the drop down menu, select **after last**, leaving the delimiter as **"_"**. This will extract age information from the end of each taxon label.  
 
 <figure>
 	<a id="fig:7"></a>
@@ -193,16 +193,16 @@ Here we will set up the tree model and all the prior parameters associated with 
 
 ### Clock model parameters
 
-Let's start with clock model parameters, the overall mean on theh clock rate (**ucldMean**) and the standard deviation of the clock rates (**ucldStdev**), which you should already see listed here.
+Let's start with clock model parameters, the overall mean on the clock rate (**ucldMean**) and the standard deviation of the clock rates (**ucldStdev**), which you should already see listed here.
 
 > Expand the options for **ucldMean** by clicking the triangle to the left of this parameter. 
 > 
-> For the mean on the overall clock rate we will use a **normal prior**, following the original study, with a mean of 0.001 and a variance of 0.01. Rates cannot be negative so the distribution is truncated at zero.
+> For the mean on the overall clock rate we will use a **Normal** prior, following the original study, with a **Mean** of **0.001** and a standard deviation (**Sigma**) of **0.01**. Clock rates cannot be negative so the distribution is truncated at zero.
 
 <figure>
 	<a id="fig:11"></a>
 	<img style="width:100%;" src="figures/06a_Clock_priors.png" alt="">
-	<figcaption>Figure 11: The prior on the overall clock rate, ucldMean.</figcaption>
+	<figcaption>Figure 11: The prior on the mean clock rate, ucldMean.</figcaption>
 </figure>
 
 > Select the **initial** value option next to the distribution and change **Value** to 0.001. This ensures our analysis starts in a reasonable part of the parameter space. Click **OK**.
@@ -210,10 +210,10 @@ Let's start with clock model parameters, the overall mean on theh clock rate (**
 <figure>
 	<a id="fig:12"></a>
 	<img style="width:80%;" src="figures/06b_Clock_priors.png" alt="">
-	<figcaption>Figure 12: Setting the initial value for the overall clock rate, ucldMean.</figcaption>
+	<figcaption>Figure 12: Setting the initial value for the mean clock rate, ucldMean.</figcaption>
 </figure>
 
-> For the standard deviation of the distribution of clock rates, **ucldStdev**, we'll use an exponential prior with a mean of 0.1. 
+> For the standard deviation of the distribution of clock rates, **ucldStdev**, we'll use an **Exponential** prior with a mean of **0.1**. 
 
 <figure>
 	<a id="fig:13"></a>
@@ -231,13 +231,17 @@ Next let's set up the phylodynamic model.
 
 There are a lot of options for combining parameters using BDMM-Prime, so we need to be careful to select parameter combinations that make sense for our dataset. 
 
-First, we need to choose how we want to parameterize our model - that is, which parameters we want to constrain using prior information. There are three options for parameterising the birth-death model using BDMM-Prime. For macroevolution we can choose from two options:
+First, we need to choose how we want to parameterize our model - that is, which parameters we want to operate on and add prior information for. Currently, there are three options for parameterising the birth-death model using BDMM-Prime available in BEAUti. For macroevolution we can choose between two options:
 
-- The **Canonical Parameterization**, which is parameterized using the birth ({% eqinline \lambda %}), death ({% eqinline \mu %}), and sampling rates ({% eqinline \psi %}). 
-- The **Fossilized Birth Death Parameterization**, which is parameterized using diversification rate ({% eqinline d %}), turnover rate ({% eqinline v %}), and sampling proportion ({% eqinline s %}).
+- The **Canonical Parameterization**, which is parameterized using the birth ({% eqinline \lambda %}), death ({% eqinline \mu %}), and sampling rates ({% eqinline \psi %}). In this parameterization, and in the context of macroevolution, births usually correspond to speciation events, deaths to extinctions and sampling events to fossilizations.
+- The **Fossilized Birth Death Parameterization**, which is parameterized using the net diversification rate ({% eqinline d %}), turnover rate ({% eqinline v %}), and sampling proportion ({% eqinline s %}).
 
-The relationship between the parameterizations is shown in Table 1. Both are useful in macroevolution and your choice might depend on which parameters are of most interest to you or what prior information you have available. Note that after your analysis is complete, you can always go from one set of parameters to the other via the transformations shown in the table below.
+The relationship between the parameterizations is shown in [Table 1](#table:1). Both are useful in macroevolution and your choice might depend on which parameters are of most interest to you or what prior information you have available. In other cases inference under one parameterization might be numerically more stable than another or converge faster. Note that after your analysis is complete, you can always go from one set of parameters to the other via the transformations shown in the table below.
 
+
+<a id="table:1"></a>
+
+<!-- inline fractions -- MISTAKE IN EQN FOR MU!
 | Parameter    | Transformation |
 | :-------- | :-------: |
 | Speciation ({% eqinline \lambda %})  | {% eqinline \lambda = d / (1 - v) %}    |
@@ -246,15 +250,28 @@ The relationship between the parameterizations is shown in Table 1. Both are use
 | Net diversification ({% eqinline d %})  | {% eqinline d = \lambda - \mu %}    |
 | Turnover ({% eqinline v %}) | {% eqinline v = \mu/\lambda %}     |
 | Sampling proportion ({% eqinline s %}) | {% eqinline s = \psi/(\mu + \psi) %}     |
+-->
 
-After you've chosen which parameterization to use, there are still a lot of options left for setting up the model in BDMM-Prime. Later in Part 2 we will assign taxa to "types" based on their geographic provenance but for the first analysis in this tutorial we'll assume that birth, death, and sampling are all constant through time and across our tree.  
+<!-- I prefer fractions, fewer parentheses and easier to read -->
 
-> In this tutorial we'll use the **Canonical Parameterization**, which is the default. Alternatives can be selected from the drop down menu next to **Parameterization**.  
-> The canonical option can be applied to scenarios in both epidemiology and macroevolution.
+| Parameter    | Transformation |
+| :-------- | :-------: |
+| Speciation ({% eqinline \lambda %})  | {% eqinline \lambda = \frac{d}{1 - v} %}    |
+| Extinction ({% eqinline \mu %})  | {% eqinline \mu = \frac{vd}{1-v} %}    |
+| Sampling ({% eqinline \psi %})  | {% eqinline \psi = \left( \frac{s}{1-s} \right) \left(  \frac{vd}{1-v} \right) %}    |
+| Net diversification ({% eqinline d %})  | {% eqinline d = \lambda - \mu %}    |
+| Turnover ({% eqinline v %}) | {% eqinline v = \frac{\mu}{\lambda} %}     |
+| Sampling proportion ({% eqinline s %}) | {% eqinline s = \frac{\psi}{\mu + \psi} %}     |
+
+
+
+After you've chosen which parameterization to use, there are still a lot of options left for setting up the model in BDMM-Prime. Later, in Part 2 we will assign taxa to "types" based on their geographic provenance but for the first analysis in this tutorial we'll assume that birth, death, and sampling are all constant through time and across our tree.  
+
+> In this tutorial we'll use the **Canonical Parameterization**, which is the default. Alternatives can be selected from the drop down menu next to **Parameterization**. The canonical option can be applied to scenarios in both epidemiology and macroevolution.
 > 
-> The only change we'll make here is to the value for **Birth Rate** and **Death Rate**, next to **ALL** and under **Epoch 1**, from 1.0 to 0.1 - these are the starting values for these parameters. Double click on each value to edit it and make sure to press enter. Notice that **Estimate values** is checked for all three of these parameters, which means they will be estimated and not fixed during inference.
+> The only change we'll make here is to the value for **Birth Rate** and **Death Rate**, next to **ALL** and under **Epoch 1**, from **1.0** to **0.1** - these are the initial values for these parameters. Double click on each value to edit it and make sure to press enter. Notice that **Estimate values** is checked for all three of these parameters, which means they will be estimated and not fixed during inference.
 > 
-> We'll leave **Number of change times** for each of these parameters as 0.  
+> We'll leave **Number of change times** for each of these parameters as **0** meaning these rates are assumed to stay constant over time.  
 
 <figure>
 	<a id="fig:14"></a>
@@ -264,11 +281,13 @@ After you've chosen which parameterization to use, there are still a lot of opti
 
 > Scroll down to the next set of parameters of interest. 
 
-**Rho Sampling** is the probability of sampling a lineage at a given time. In macroevolution this is usually associated with the extant sampling probability at t = 0. In our case study, we have no sampling beyond the period of interest, i.e., the youngest sample included in our dataset is from the Triassic and is therefore {% eqinline \psi %}-sampled. There are many amniotes that persisted beyond this interval until the present but these are not included in our dataset. This means we have no rho-sampled taxa and it makes sense to leave Rho = 0.0. 
+**Rho Sampling** is the probability of sampling a lineage at a given time. In macroevolution this is usually associated with the extant sampling probability at t = 0 (the present). In our case study, we have no sampling beyond the period of interest, i.e., the youngest sample included in our dataset is from the Triassic period and is therefore {% eqinline \psi %}-sampled. There are many amniotes that persisted beyond this interval until the present but these are not included in our dataset. This means we have no rho-sampled taxa and it makes sense to leave **Rho = 0.0**. 
 
-The next parameter of note is the **Removal Prob** - this is the probability that a lineage is removed from the population upon sampling and it makes more sense in an epidemiological context. We need to change this to 0.0. 
+The next parameter of note is **Removal Prob** - this is the probability that a lineage is removed from the population upon sampling (through a {% eqinline \psi %}-sampling event) and it makes more sense in an epidemiological context. In macroevolution a removal after sampling implies that a species went extinct after a fossilization event. Since we are convinced this is not the case we need to change the removal probability to 0.0. 
 
-> Select the value listed next to ALL and below **Epoch 1** for **Removal Prob** and change it to 0.0.
+> Select the value listed next to **ALL** and below **Epoch 1** for **Removal Prob** and change it to **0.0**.
+
+Note that we are not estimating the removal probability!
 
 <figure>
 	<a id="fig:15"></a>
@@ -278,9 +297,9 @@ The next parameter of note is the **Removal Prob** - this is the probability tha
 
 For now you can leave everything else under this tab as it is. If you close this tab and scroll down you should now be able to see an additional set of parameters listed in the **Priors** panel for the birth, death, sampling rates and the origin time parameter.
 
-For the birth, death, and sampling rate parameters we'll use an exponential prior with a mean = 0.1. This matches values that are typically estimated for these parameters in paleobiology.
+For the birth, death, and sampling rate parameters we'll use exponential priors with mean = 0.1. This matches values that are typically estimated for these parameters in paleobiology.
 
-> From the drop down menu next to **birthRateCanonical** select **Exponential** and expand the options. Change the mean of this distribution to 0.1.
+> From the drop down menu next to **birthRateCanonical** select **Exponential** and expand the options. Change the mean of this distribution to **0.1**.
 
 <figure>
 	<a id="fig:16"></a>
@@ -288,7 +307,7 @@ For the birth, death, and sampling rate parameters we'll use an exponential prio
 	<figcaption>Figure 16: Prior options for the birth rate parameter.</figcaption>
 </figure>
 
-> Go ahead and do the same for the death and sampling rate parameters.
+> Go ahead and do the same for the **deathRateCanonical** and **samplingRateCanonical** parameters.
 
 <figure>
 	<a id="fig:17"></a>
@@ -302,9 +321,9 @@ For the birth, death, and sampling rate parameters we'll use an exponential prio
 	<figcaption>Figure 18: Prior options for the death rate parameter.</figcaption>
 </figure>
 
-For the origin time parameter, we'll also use an exponential distribution following the original study, with an offset = 318.1 Ma and a mean = 327.5 Ma. However, recall that BEAST scales the tree such the youngest sample is always zero, so these values will be defined relative to t = 0. 
+For the origin time parameter, we'll also use an exponential distribution following the original study, with an offset of 318.1 Ma and a mean of 327.5 Ma. However, recall that BEAST scales the tree such the youngest sample is always zero, so these values will be defined relative to t = 0. 
 
-> Select **Exponential** from the drop down menu next to **originBDMMPrime** and expand the options. Change the offset to 81.1, which is 318.1 minus the youngest age of our sampling interval = 237, and change the mean to 10.0. 
+> Select **Exponential** from the drop down menu next to **originBDMMPrime** and expand the options. Change the **offset** to **81.1**, which is 318.1 minus the youngest age of our sampling interval (237), and change the **Mean** to **10.0**. 
 
 <figure>
 	<a id="fig:19"></a>
@@ -312,7 +331,7 @@ For the origin time parameter, we'll also use an exponential distribution follow
 	<figcaption>Figure 19: Prior options for the origin time parameter.</figcaption>
 </figure>
 
-> Finally, select the **initial** value box for the origin and change **Value** to 100.0. The origin time of the process needs to be older than all our fossils. Click **OK**.
+> Finally, select the **initial** value box for the origin and change **Value** to **100.0**. The origin time of the process needs to be older than all our fossils, otherwise the process cannot be initialised. Click **OK**.
 
 <figure>
 	<a id="fig:20"></a>
@@ -326,7 +345,9 @@ We're going to use two taxonomic constraints for this analysis.
 
 > Scroll down to the bottom of the Priors panel and click **+Add Prior**. From the drop down menu select **MRCA prior**. Click **OK**. This will open a box where you can define groups of taxa. 
 > 
-> For the first constraint, type 'ingroup1' into the box next to **Taxon set label**. From the list of taxa on the left click on any taxa and use select all (e.g., cmd + A on Mac or Ctrl + A on Windows) to highlight all of them. Scroll down to `Gephyrostegus_bohemicus_Eu_309` and deselect this taxon using cmd + shift or Ctrl + shift. Click the **>>** button. Now all taxa except *Gephyrostegus* should appear on the right. Alternatively, you can select all of them, move them to the right and simply move *Gephyrostegus* back to the left using the **<<** button. 
+> For the first constraint, type **'ingroup1'** into the box next to **Taxon set label**. From the list of taxa on the left click on any taxa and use select all (e.g., **Cmd+A** on MacOS or **Ctrl+A** on Windows) to highlight all of them. Scroll down to `Gephyrostegus_bohemicus_Eu_309` and deselect this taxon using **Cmd+click** or **Ctrl+click**. Click the **>>** button. Now all taxa except *Gephyrostegus* should appear on the right. 
+>
+> Alternatively, you can select all of them, move them to the right and simply move *Gephyrostegus* back to the left using the **<<** button. 
 
 <figure>
 	<a id="fig:21"></a>
@@ -336,9 +357,9 @@ We're going to use two taxonomic constraints for this analysis.
 
 > Click **OK** and then select the checkbox that says **monophyletic** that appears next to this constraint.
 
-> To add the next constraint, click **+Add Prior**. From the drop down menu select **MRCA prior**. Click **OK**. 
+> To add the next constraint, click **+Add Prior** again. From the drop down menu select **MRCA prior**. Click **OK**. 
 > 
-> For the second constraint, type 'ingroup2' into the box next to **Taxon set label**. This next constraint will include all taxa except `Gephyrostegus_bohemicus_Eu_309` and `Seymouria_spp_NAm_288.51`.
+> For the second constraint, type **'ingroup2'** into the box next to **Taxon set label**. This next constraint will include all taxa except `Gephyrostegus_bohemicus_Eu_309` and `Seymouria_spp_NAm_288.51`.
 
 <figure>
 	<a id="fig:22"></a>
@@ -354,11 +375,11 @@ We're going to use two taxonomic constraints for this analysis.
 	<figcaption>Figure 23: The final set of options for the Priors panel.</figcaption>
 </figure>
 
-Use this screen shot to ensure all your prior distributions and initial values have been set up as described.
+Use the screenshot above to ensure all your prior distributions and initial values have been set up as described.
 
 ## The MCMC panel
 
-> Navigate to the MCMC panel and change the **Chain Length** to 1,000,000 (just delete one of the zeros).
+> Navigate to the **MCMC** panel and change the **Chain Length** to **1,000,000** (just delete one of the zeros).
 
 <figure>
 	<a id="fig:24"></a>
@@ -368,7 +389,7 @@ Use this screen shot to ensure all your prior distributions and initial values h
 
 BDMM-Prime allows us to output additional tree files using the **typedTree** and **nodeTypedTree** loggers - these are not useful for our initial analysis and make the analysis more computationally expensive, so we will disable these options for now (but see Part 2 below). 
 
-> Uncheck the boxes next to **Enable Logger** for **typedTreeLogger** and **nodeTypedTreeLogger**.
+> Uncheck the boxes next to **Enable Logger** for **typedTreeLogger** and **nodeTypedTreeLogger** after expanding the options for both trees.
 
 <figure>
 	<a id="fig:25"></a>
@@ -380,11 +401,15 @@ BDMM-Prime allows us to output additional tree files using the **typedTree** and
 
 > You can leave BEAUti open for the next part of the exercise! However, if you do close BEAUti you can simply go to **File > Load** and select your xml file - all the BDMM-Prime specifications should be reloaded.
 
+----
+
 ## Running BEAST
 
-To run your analysis open the BEAST application and navigate to the right working directory. Select your xml file and click **Run**.
+> To run your analysis open the **BEAST** application and navigate to the right working directory. Select your xml file and click **Run**.
 
 This analysis should only take about a minute to run. 
+
+----
 
 ## Examining the output
 
@@ -393,7 +418,7 @@ This analysis should have generated the following results files:
 - `amniotes_constant_rates_FBD.log` - this file contains all the numerical parameters sampled during MCMC.
 - `amniotes.trees` - this file contains the trees sampled during MCMC.
 
-> First open the .log file in Tracer and explore the output. It should look something like this. 
+> First open the `.log` file in **Tracer** and explore the output. It should look something like this. 
 
 <figure>
 	<a id="fig:26"></a>
@@ -401,11 +426,13 @@ This analysis should have generated the following results files:
 	<figcaption>Figure 26: The tracer window for the constant rates FBD model.</figcaption>
 </figure>
 
-Of particular interest are the parameters **birthRateSPCanonical**, **deathRateSPCanonical**, and **samplingRateSPCanonical**. The speciation and extinction rates are both ~0.35, while the sampling rate is ~0.01. This suggests that sampling is low relative to the overall diversity of the group. 
+Of particular interest are the parameters **birthRateSPCanonical**, **deathRateSPCanonical**, and **samplingRateSPCanonical**. The speciation and extinction rates (birth and death) are both ~0.35, while the sampling rate is ~0.01. This suggests that sampling is low relative to the overall diversity of the group. 
 
 Note that this analysis hasn't fully converged but you can download the pre-cooked output for the same analysis that's been run a bit longer.
 
-> If you want you can also generate a consensus tree using the standard .trees file (`amniotes.trees`) as the input and the approach described in [previous tutorials](https://taming-the-beast.org/tutorials/Total-Evidence-Tutorial/) for trees with sampled ancestors. For the **Target tree type** stick with the default **Maximum clade credibility tree** and for the **Node Heights** select **Median heights** from the drop down menu. 
+If you want you can also generate a consensus tree using the standard `.trees` file (`amniotes.trees`) as the input and the approach described in [previous tutorials](https://taming-the-beast.org/tutorials/Total-Evidence-Tutorial/) for trees with sampled ancestors. 
+
+> Open **TreeAnnotator**. For the **Target tree type** stick with the default **Maximum clade credibility tree** and for the **Node Heights** select **Median heights** from the drop down menu. Load `amniotes.trees` under **Input Tree File** and set the **Output file** to something sensible.
 
 <figure>
 	<a id="fig:27"></a>
