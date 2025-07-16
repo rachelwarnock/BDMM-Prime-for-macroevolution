@@ -461,13 +461,15 @@ If you want you can also generate a consensus tree using the standard `.trees` f
 
 # Part 2: The multi-type birth-death process
 
-In the second part of this tutorial we will take geographic provenance of the fossils into account and allow birth, death, and sampling rate to vary across geographic areas. To achieve this we will incorporate a migration rate parameter into the model and in addition, we will allow migration rate to vary through time, to acknowledge the observation that the interconnectedness of the geographic areas changes considerably over the course of our sampling interval.
+In the second part of this tutorial we will take geographic provenance of the fossils into account and allow the birth, death, and sampling rates to vary between geographic areas. To achieve this we will incorporate a migration rate parameter into the model and in addition, we will allow the migration rate to vary through time, to acknowledge the observation that the interconnectedness of the geographic areas changes considerably over the course of our sampling interval.
 
-> Create a new folder to run this next analysis.
+> First, create a new folder to run this next analysis.
 
 ## The Priors Panel
 
-> Return to the Priors panel in BEAUti. Next we're going to extract information about geographic area. Expand the tree model options and scroll down to **Type Trait Set**. Click **Auto-configure**. Select **split on character** and from the drop down menu next to **and take group(s):** select 3. 
+> Return to the Priors panel in **BEAUti**. Next we're going to extract information about geographic area. Expand the tree model options and scroll down to **Type Trait Set**. Click **Auto-configure**. 
+>
+> Select **split on character** and from the drop down menu next to **and take group(s):** select 3, leaving the character to split on as **"_"**. Click **OK**.
 
 <figure>
 	<a id="fig:29"></a>
@@ -475,7 +477,7 @@ In the second part of this tutorial we will take geographic provenance of the fo
 	<figcaption>Figure 29: Options for extracting type information from taxon labels.</figcaption>
 </figure>
 
-> Click **OK**. You should now be able to see the geographic area associated with each fossil in the **Type** column, corresponding to Eurasia, North America, and South Africa. 
+You should now be able to see the geographic area associated with each fossil in the **Type** column, corresponding to Eurasia (Eu), North America (NAm), and South Africa (SA). 
 
 <figure>
 	<a id="fig:30"></a>
@@ -487,21 +489,23 @@ In the second part of this tutorial we will take geographic provenance of the fo
 
 The migration rate can be interpreted as the rate of change between types (in our case, the migration between geographic areas). We'll estimate this parameter and allow it to vary over time (see below). The birth rate among demes can be interpreted as the rate of "spontaneous" change between types - in epidemiology this might be used together with types that are associated with specific mutations. This parameter doesn't have an analogous meaning in our macroevolutionary context, so we'll simply fix this parameter to zero.
 
-> Double click on the box for **Birth Rate Among Demes** next to **ALL** and enter 0.0.
+> Double click on the box for **Birth Rate Among Demes** next to **ALL** and enter **0.0**.
 
 <figure>
 	<a id="fig:31"></a>
-	<img style="width:80%;" src="figures/10c_types.png" alt="">
+	<img style="width:100%;" src="figures/10c_types.png" alt="">
 	<figcaption>Figure 31: The migration rate and birth rate among demes parameters.</figcaption>
 </figure>
 
 In this analysis we want to allow birth, death, and sampling to vary across geographic areas. 
 
-> Scroll back up. You'll see that next to some of the parameters is a checked box called **Scalar values** - this indicates that a single rate applies to all types. Starting with **Birth Rate**, if you uncheck this box, a separate rate will appear next to each type. You can select **Display epoch visualisation** to make sure things are set up correctly.
+> Scroll back up. Note that the initial values for the **Birth Rate** and **Death Rate** may have reverted back to **1.0** after setting the type trait. Change it back to **0.1** for each of the three rates.
+>
+> You'll see that next to some of the parameters is a checked box called **Scalar values** - this indicates that a single rate applies to all types. Starting with **Birth Rate**, if you uncheck this box, a separate rate will appear next to each type. You can select **Display epoch visualisation** to make sure things are set up correctly.
 
 <figure>
 	<a id="fig:32"></a>
-	<img style="width:80%;" src="figures/10d_types.png" alt="">
+	<img style="width:100%;" src="figures/10d_types.png" alt="">
 	<figcaption>Figure 32: Type specific birth rates.</figcaption>
 </figure>
 
@@ -509,63 +513,76 @@ In this analysis we want to allow birth, death, and sampling to vary across geog
 
 <figure>
 	<a id="fig:33"></a>
-	<img style="width:80%;" src="figures/10e_types.png" alt="">
+	<img style="width:100%;" src="figures/10e_types.png" alt="">
 	<figcaption>Figure 33: Type specific death and sampling rates.</figcaption>
 </figure>
 
-Over the course of our sampling interval, the late Carboniferous to the mid Triassic, we see major changes in continental configuration and the relative connectedness of geographic areas - to quantify the impact this has on migration we can allow the overall migration rate to change through time, assuming piece-wise constant variation in rate.
+Over the course of our sampling interval, the late Carboniferous to the mid Triassic, we see major changes in continental configuration and the relative connectedness of geographic areas - to quantify the impact this has on migration we can allow the overall migration rate to change through time, assuming piecewise constant variation in the rate.
 
 > Return to the options associated with **Migration Rate**.
->  First double click the the initial value for this parameter and change it to 0.1 and make sure the box next to **Estimate values** is checked. Next change **Number of change times:** to 2. Check the box that says **Relative to process length** and click **Distribute evenly** - this means that the time between the origin of the process and the end will be divided into 3 equal intervals and each one will be assigned an independent rate parameter. Select **Display epoch visualisation** to make sure things are set up correctly.
+>  First double click the the initial value for this parameter and change it to 0.1 and make sure the box next to **Estimate values** is checked. 
+>
+> Next change **Number of change times:** to 2. Check the box that says **Relative to process length** and click **Distribute evenly** - this means that the time between the origin of the process and the end will be divided into 3 equal-length intervals and each one will be assigned an independent rate parameter. 
+>
+> Finally, select **Display epoch visualisation** to make sure things are set up correctly.
+
+Note that BDMM-prime sometimes shifts focus to a different parameter after changing a setting. Be careful that you don't accidentally start editing the wrong parameter after one of these jumps! 
+
+> Go through the previous few steps again and check that all settings are as in Figures 31-34.
 
 <figure>
 	<a id="fig:34"></a>
-	<img style="width:80%;" src="figures/10f_types.png" alt="">
+	<img style="width:100%;" src="figures/10f_types.png" alt="">
 	<figcaption>Figure 34: Time varying mirgration rates.</figcaption>
 </figure>
 
-Note that we can specify the probability of each type at the beginning of the process, i.e., at the origin or root. By default these are set to equal but you can change these in the box next to **Start Type Prior Probs**. This probability can be estimated or you might have strong prior evidence for the root type, but we'll leave this for now.
+Note that we can specify the probability of each type at the beginning of the process, i.e., at the origin or root. By default these are set to be equal but you can change them in the box next to **Start Type Prior Probs**. This probability can be estimated or you might have strong prior evidence for the root type, but we'll leave this for now.
 
-> Finally, scroll down and assign an exponential prior with a mean of 0.1 to the **migrationRateCanonical** parameter. Each rate will be independently drawn from the same exponential prior distribution. 
+> Finally, scroll down and assign an **Exponential** prior with a mean of **0.1** to the **migrationRateCanonical** parameter. Each migration rate will be independently drawn from the same exponential prior distribution. 
 
 <figure>
 	<a id="fig:35"></a>
-	<img style="width:80%;" src="figures/10g_types.png" alt="">
-	<figcaption>Figure 35: Prior options for mirgration rate.</figcaption>
+	<img style="width:100%;" src="figures/10g_types.png" alt="">
+	<figcaption>Figure 35: Prior options for migration rate.</figcaption>
 </figure>
+
 
 ## The MCMC panel
 
 > Navigate to the **MCMC** panel. We'll leave all the MCMC chain settings as above, i.e., we'll use a chain length of 1,000,000 steps.
 
-Now that we've added information about types, we can take advantage of some other output options. In particular, BDMM-Prime can use a stocastic mapping appraoch to generate *edge-typed trees*. These are trees that include information about the phylogenetic history of types. We can generate both *typed trees*, which show where along internal branches type changes (migration events) have occurred or *node typed trees*, which includes type information at internal nodes only.
-This can done using the **typedTreeLogger** and  **nodeTypedTreeLogger**, respectively. In this analysis, we're going to use the latter, as shown below, because *node type trees* are more computational efficient to generate and easier to summarise.
+Now that we've added information about types, we can take advantage of some other output options. In particular, BDMM-Prime can use a stochastic mapping approach to generate *edge-typed trees*. These are trees that include information about the phylogenetic history of types. We can generate both *typed trees*, which show where along internal branches type changes (migration events) have occurred or *node typed trees*, which includes type information at internal nodes only.
+This can done using the **typedTreeLogger** and  **nodeTypedTreeLogger**, respectively. In this analysis, we're going to use the latter, as shown below, because *node type trees* are more computationally efficient to generate and easier to summarise.
 
 > Expand the options next to **nodeTypedTreeLogger** and check the box next to **Enable logger**. 
 
 <figure>
 	<a id="fig:36"></a>
-	<img style="width:80%;" src="figures/11b_MCMC.png" alt="">
+	<img style="width:100%;" src="figures/11b_MCMC.png" alt="">
 	<figcaption>Figure 36: Options for the node typed tree logger.</figcaption>
 </figure>
 
 > Go to **File > Save as** to save your xml input file in your new folder. Call it something like `amniotes_multi_type_FBD.xml`. 
 
+----
+
 ## Running BEAST
 
-As above, run your analysis in the BEAST application and navigate to the right working directory. Select your xml file and click Run. 
+> As above, to run your analysis open the **BEAST** application and navigate to the right working directory. Select your xml file and click **Run**.
 
-This analysis will take ~20 minutes to run. Ideally this analysis would be run for much longer, e.g., 10,000,000+ generations.
+This analysis will take \~20 minutes to run. Ideally this analysis would be run for much longer, e.g., 10,000,000+ iterations.
+
+----
 
 ## Examining the output
 
 This analysis should have generated the following results files:
 
-- `amniotes_multi_type_FBD.log` - this file contains all the numerical parameters sampled during MCMC.
-- `amniotes.trees` - this file contains the trees sampled during MCMC.
-- `amniotes_multi_type_FBD.typed.node.trees` - this file contains the trees sampled during MCMC with ancestral types mapped onto internal nodes.
+- `amniotes_multi_type_FBD.log`: this file contains all the numerical parameters sampled during MCMC.
+- `amniotes.trees`: this file contains the trees sampled during MCMC.
+- `amniotes_multi_type_FBD.typed.node.trees`: this file contains the trees sampled during MCMC with ancestral types mapped onto internal nodes.
 
-> Open the .log file in Tracer and explore the output. It should look something like this.
+> Open the `.log` file in **Tracer** and explore the output. It should look something like this. 
 > 
 > You might need to expand and adjust the Tracer window so you can see parameter names.
 
@@ -593,11 +610,11 @@ Now we have some additional parameters of interest. In particular, we have three
 	<figcaption>Figure 39: The tracer window for the multi-type FBD model showing the migration rates associated with each interval.</figcaption>
 </figure>
 
-You should be able to see a larger estimate for migration in the final time bin, which we might expect based on the increase in connectivity between regions in the Triassic. Recall that we defined 3 equal intervals relative to the origin time of the process. The variables appended **_endtime** are the estimates end points of each interval relative to the origin age.
+You should be able to see a larger estimate for migration in the final time bin, which we might expect based on the increase in connectivity between regions in the Triassic. Recall that we defined 3 equal intervals relative to the origin time of the process. The variables appended **_endtime** are the estimated endpoints of each interval, relative to the origin age.
 
-We can summarise information about ancestral types across our posterior distribution of trees using TreeAnnotor. 
+We can summarise information about ancestral types across our posterior distribution of trees using TreeAnnotator. 
 
-> Open TreeAnnotator and select `amniotes_multi_type_FBD.typed.node.trees` as your **Input Tree File**.
+> Open **TreeAnnotator** and select `amniotes_multi_type_FBD.typed.node.trees` as your **Input Tree File**.
 > 
 > For the **Target tree type** stick with the default **Maximum clade credibility tree** and for the **Node Heights** select **Median heights** from the drop down menu. Call your **Output File** something like `amniotes_multi_type_FBD.typed.node.con.tre`. See [Figure 27](#fig:27).
 
