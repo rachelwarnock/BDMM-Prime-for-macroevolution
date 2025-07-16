@@ -1,5 +1,5 @@
 ---
-author: Rachel C. M. Warnock, Timothy G Vaughan
+author: Rachel C. M. Warnock, Timothy G Vaughan, Louis du Plessis
 level: Intermediate
 title: BDMM-Prime for Macroevolution
 subtitle: The fossilized birth-death process and extensions
@@ -73,7 +73,9 @@ The data comprises 294 binary and multi-state characters for 70 fossils, as well
 	<figcaption>Figure 1: The nexus file containing the morphological data.</figcaption>
 </figure>
 
-Note that the taxon labels contain information about the age of our samples (after the last underscore) and their geographic provenance (after the second underscore).
+Each row in the character matrix contains information for a single taxon. Note that the taxon labels contain information about the age of our samples (after the last underscore) and their geographic provenance (after the second underscore).
+
+Each column (or site) in the character matrix is a morphological character. An integer is used to represent different discrete states for each character, such that a binary character can only be 0 or 1, while a character with 3 possible states could be 0, 1 or 2. Question marks (`?`) are used to represent missing data, i.e., characters that could not be coded for a given taxon, e.g., due incomplete preservation. In contrast, dashes (`-`) are used to represent characters that do not apply to a given taxon, i.e., if a character describes the morphology of an anatomical feature that a taxon does not have it will be scored as non-applicable.
 
 ## Installing the BDMM-Prime and MM packages
 
@@ -193,6 +195,8 @@ Under the **Site Model** panel we can specify the model of morphological evoluti
 	<img style="width:100%;" src="figures/04_Site_model.png" alt="">
 	<figcaption>Figure 9: The Site Model panel.</figcaption>
 </figure>
+
+The Mk model is equivalent to the Jukes-Cantor model for molecular sequence evolution. It can be applied to discrete characters with any given number of states and assumes that transitions between all states within a given partition occur at the same rate. The "v" indicates that we will add the correction for ascertainment bias, which we already specified when we loaded the data into Beauti (see above).
 
 ## The Clock Model panel
   
