@@ -147,6 +147,17 @@ By default the characters are separated into four partitions. This means that ch
 
 Note that the **Site Model** is *unlinked* across partitions, while the **Clock Model** and **Tree** are *linked* by default. This means that we will allow each partition to evolve under a separate substitution process, but we will assume that the underlying tree is the same and that the same clock model is shared across partitions. 
 
+
+> **Topic for discussion**
+>
+> Would it make any sense to link the site models across partitions here?
+>
+> <details>
+>	<summary>Answer</summary>
+> 
+> Not really. In this analysis we have four partitions, where each partition has a different number of possible states. If we were to link site models, the site model would need to have the maximum number of states for all the partitions. That means that we would use a model with 5 possible states for each site in our alignment, including sites where we've only observed 2, 3 or 4 states. While it is possible that these states exist and we just haven't observed them, in most cases this doesn't make sense. For instance, if a binary trait stands for presence/absence, allowing for substitutions to 3 further states is nonsensical. 
+> 
+
 ## The Tip Dates panel
 
 > Navigate to the **Tip Dates** panel and select **Use tip dates**.
@@ -645,6 +656,20 @@ We can summarise information about ancestral types across our posterior distribu
 </figure>
 
 We can use this tree to explore hypotheses about the geographic origins of different lineages. Note that based on node typed trees, it is not possible to make any statements about where and when along a given branch a type change may have occurred. To learn more about options for exploring migration history check out the [BDMM-Prime package website](https://tgvaughan.github.io/BDMM-Prime/).
+
+
+> **Topic for discussion**
+>
+> In our analysis we only have one migration rate for each time interval, making three migration rates in total, for 3 geographical areas. What are the implications of this assumption? How can we relax it?  
+>
+> <details>
+>	<summary>Answer</summary>
+>
+> The implication is that migration between any two locations is equal within a given time interval. In general we may want to relax this, so that we can have different migration rates between different pairs of locations. We may either want symmetric migration rates (3 rates per time interval) or nonsymmetric (6 rates per time interval). 
+>
+> To allow nonequal migration rates, simply untick the <b>Scalar values</b> checkbox under <b>Migration Rate</b> within the <b>BDMMPrime</b> options in the <b>Priors</b> panel. You can use the <b>Link identical values</b> checkbox to set up a symmetric rate matrix.
+> 
+
 
 ----
 
