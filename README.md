@@ -1,5 +1,5 @@
 ---
-author: Rachel C. M. Warnock, Timothy G Vaughan, Louis du Plessis
+author: Rachel C. M. Warnock,Timothy G. Vaughan,Louis du Plessis
 level: Intermediate
 title: BDMM-Prime for Macroevolution
 subtitle: The fossilized birth-death process and extensions
@@ -196,7 +196,7 @@ Under the **Site Model** panel we can specify the model of morphological evoluti
 	<figcaption>Figure 9: The Site Model panel.</figcaption>
 </figure>
 
-The Mk model is equivalent to the Jukes-Cantor model for molecular sequence evolution. It can be applied to discrete characters with any given number of states and assumes that transitions between all states within a given partition occur at the same rate. The "v" indicates that we will add the correction for ascertainment bias, which we already specified when we loaded the data into Beauti (see above).
+The Mk model is equivalent to the Jukes-Cantor model for molecular sequence evolution. It can be applied to discrete characters with any given number of states and assumes that transitions between all states within a given partition occur at the same rate. The "v" indicates that we will add the correction for ascertainment bias, which we already specified when we loaded the data into BEAUti (see above).
 
 ## The Clock Model panel
   
@@ -514,7 +514,7 @@ You should now be able to see the geographic area associated with each fossil in
 
 The migration rate can be interpreted as the rate of change between types (in our case, the migration between geographic areas). We'll estimate this parameter and allow it to vary over time (see below). 
 
-The birth rate among demes is the rate at which individuals in deme {% i %} give birth to individuals in deme {% j %}, such that new births in {% j %} will be proportional to the number of individuals in {% i %}. This parameter doesn't have an analogous meaning in our macroevolutionary context, so we'll simply fix this parameter to zero.
+The birth rate among demes is the rate at which individuals in deme {% eqinline i %} give birth to individuals in deme {% eqinline j %}, such that new births in {% eqinline j %} will be proportional to the number of individuals in {% eqinline i %}. This parameter doesn't have an analogous meaning in our macroevolutionary context, so we'll simply fix this parameter to zero.
 
 > Double click on the box for **Birth Rate Among Demes** next to **ALL** and enter **0.0**.
 
